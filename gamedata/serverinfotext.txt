@@ -1,0 +1,42 @@
+"Games"
+{
+	"tf"
+	{
+		"Offsets"
+		{
+			"CBaseClient::SendServerInfo::infotext::inst"
+			{
+				"linux" "4"
+				"windows" "1"
+			}
+		}
+		"Signatures"
+		{
+			"CBaseClient::SendServerInfo"
+			{
+				"library" "engine"
+				"linux" "@_ZN11CBaseClient14SendServerInfoEv"
+				"windows" "\x55\x8B\xEC\xB8\xF8\x14\x00\x00"
+			}
+		}
+		"MemPatches"
+		{
+			"CBaseClient::SendServerInfo::infotext"
+			{
+				"signature" "CBaseClient::SendServerInfo"
+				"linux"
+				{
+					"offset" "E8h"
+					"verify" "\xC7\x44\x24\x08\x2A\x2A\x2A\x2A"
+					"patch" "\xC7\x44\x24\x08\x00\x00\x00\x00"
+				}
+				"windows"
+				{
+					"offset" "A0h"
+					"verify" "\x68\x2A\x2A\x2A\x2A"
+					"patch"  "\x68\x00\x00\x00\x00"
+				}
+			}
+		}
+	}
+}

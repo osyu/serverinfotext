@@ -1,0 +1,61 @@
+name: Build workflow
+
+on:
+  push:
+    branches: master
+    paths-ignore: '**.md'
+  pull_request:
+    paths-ignore: '**.md'
+  release:
+    types: published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Checkout Source Scramble
+        uses: actions/checkout@v3
+        with:
+          repository: nosoop/SMExt-SourceScramble
+          path: sourcescramble
+
+      - name: Set up spcomp
+        uses: rumblefrog/setup-sp@master
+        with:
+          version: 1.11.x
+
+      - name: Compile plugin
+        working-directory: scripting/
+        env:
+          include: ${{ github.workspace }}/sourcescramble/scripting/include/
+        run: |
+          mkdir ../plugins
+          spcomp64 -v2 -E -i$include serverinfotext.sp -o ../plugins/serverinfotext.smx
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: plugins/serverinfotext.smx
+
+  upload-release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'release'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: package
+
+      - name: Upload release asset
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: serverinfotext.smx
