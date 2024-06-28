@@ -69,12 +69,19 @@
 	}
 	"tf"
 	{
+		"Offsets"
+		{
+			"CBaseClient::SendServerInfo::infotext::inst"
+			{
+				"linux" "1"
+			}
+		}
 		"Signatures"
 		{
 			"CBaseClient::SendServerInfo"
 			{
 				"library" "engine"
-				"windows" "\x55\x8B\xEC\xB8\xF8\x14\x00\x00"
+				"windows" "\x55\x8B\xEC\xB8\x00\x15\x00\x00"
 			}
 		}
 		"MemPatches"
@@ -83,12 +90,15 @@
 			{
 				"linux"
 				{ 
-					"offset" "E8h"
+					"offset" "329h"
 				}
 				"windows"
 				{
-					"offset" "A0h"
+					"offset" "A1h"
 				}
+				
+				"verify" "\x68\x2A\x2A\x2A\x2A"
+				"patch" "\x68\x00\x00\x00\x00"
 			}
 		}
 	}
